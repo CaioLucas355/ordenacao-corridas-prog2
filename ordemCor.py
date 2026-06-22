@@ -176,7 +176,7 @@ def merge(l, lEsq, lDir):
         k += 1
 
 
-def merge_sort_hibrido(l):
+def merge_sortCA(l):
 
     if len(l) <= 30:
         insertion_sort(l, 0, len(l))
@@ -186,15 +186,15 @@ def merge_sort_hibrido(l):
     lEsq = l[:meio] #cópia da primeira metade
     lDir = l[meio:] #cópia da segunda metade
 
-    merge_sort_hibrido(lEsq)
-    merge_sort_hibrido(lDir)
+    merge_sortCA(lEsq)
+    merge_sortCA(lDir)
     merge(l, lEsq, lDir)
 
 #-----------------------------------------------------------------------------------
 
 #EXECUÇÃO
 t1 = time()
-merge_sort_hibrido(itens)
+merge_sortCA(itens)
 t2 = time()
 
 ids_corridas = [item[1] for item in itens]
