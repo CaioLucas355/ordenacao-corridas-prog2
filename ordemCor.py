@@ -1,7 +1,10 @@
 import pickle
+from time import time
+
 
 def chamado():
     return input("Digite o Nome do Arquivo:\t")
+
 
 arq = chamado()
 #leitura do arquivo binário:
@@ -11,40 +14,56 @@ with open(arq, 'rb') as arquivo:
     corridas = pickle.load(arquivo)
 
 
+
 """
 (Ah, queria deixar algo de zero relação com o código: to pensando fortemente
 em substituir parte dos meus comentários com HASHTAG por essa formatação aqui, ta.
 É muito legal o fato de que eu posso minimizar o comentário dessa forma. Anyway, voltando para a luta:)
 """
 
-#criação da lista de ids (somente as chaves do dicionário corridas):
-ids_corridas = []
+"""
+Encontrei uma maneira melhor de escrever isso durante uma aulinha do Hilário Legal. 
 
 for elem in corridas:
     ids_corridas.append(elem)
 
+    
+"""
 
-#------------------------------------------------------------
+ids_corridas = [elem for elem in corridas]
 
-
-#mapeamento de prioridade das categorias:
-categoria_prioridade = {'Black': 1,'Comfort': 2,'Comum': 3,'Moto': 4}
-
-
-#-----------------------------------------------------------------
+categoria_prioridade = {'Black': 1, 'Comfort': 2, 'Comum': 3, 'Moto': 4}
 
 
-#função de comparação (CRITÉRIOS)
-def comparar(id1, id2):
+#-----------------------------------------------------------------------------------
+
+
+def chave_ordenacao(identidadeC):
+
+    placa, cpf_cliente, data, _, _, valor = corridas[identidadeC]
+    dia, mes, ano = data
+    cat = veiculos[placa][0]
+    prio = categoria_prioridade[cat]
+    cpf_motorista = veiculos[placa][1]
+    _, estrelas, _ = usuarios[cpf_motorista]
+    nome_cliente, _, _ = usuarios[cpf_cliente]
+
     """
-    Retorna True se id1 deve vir antes de id2 na ordenação.
-    Critérios (em ordem de prioridade):
-      1. Categoria (Black > Comfort > Comum > Moto)
-      2. Data (mais recente primeiro)
-      3. Estrelas do motorista (maior primeiro)
-      4. Nome do cliente (ordem alfabética)
-      5. Valor da corrida (maior primeiro)
-    """
+
+
+    Função antiga dessa joça:
+
+
+    def comparar(id1, id2):
+    
+    #Retorna True se id1 deve vir antes de id2 na ordenação.
+    #Critérios (em ordem de prioridade):
+      #1. Categoria (Black > Comfort > Comum > Moto)
+      #2. Data (mais recente primeiro)
+      #3. Estrelas do motorista (maior primeiro)
+      #4. Nome do cliente (ordem alfabética)
+      #5. Valor da corrida (maior primeiro)
+   
 
     #desempacotamento do dicionario corridas
     placa1, cpf_cliente1, data1, horario1, duracao1, valor1 = corridas[id1]
@@ -97,23 +116,52 @@ def comparar(id1, id2):
     return valor1 > valor2
 
 
-#-----------------------------------------------------------------
+    """
+
+    #Critérios (em ordem de prioridade):
+          #1. Categoria (Black > Comfort > Comum > Moto)
+          #2. Data (mais recente primeiro)
+          #3. Estrelas do motorista (maior primeiro)
+          #4. Nome do cliente (ordem alfabética)
+          #5. Valor da corrida (maior primeiro)
+
+    return (prio, -ano, -mes, -dia, -estrelas, nome_cliente, -valor)
 
 
+itens = [(chave_ordenacao(identidadeC), identidadeC) for identidadeC in ids_corridas]
+
+
+
+#-----------------------------------------------------------------------------------
+
+
+def insertion_sort(l, inicio, fim):
+    for i in range(inicio + 1, fim):
+        chave = l[i]
+        j = i - 1
+        while j >= inicio and chave[0] < l[j][0]:
+            l[j + 1] = l[j]
+            j -= 1
+        l[j + 1] = chave
+
+
+#-----------------------------------------------------------------------------------
 
 def merge(l, lEsq, lDir):
+    
     i = 0  #ponteiro para lEsq
     j = 0  #ponteiro para lDir
     k = 0  #ponteiro para l (resultado)
 
     while i < len(lEsq) and j < len(lDir):
-        if comparar(lEsq[i], lDir[j]):   
+        if lEsq[i][0] < lDir[j][0]:   #compara as chaves
             l[k] = lEsq[i]
             i += 1
         else:
             l[k] = lDir[j]
             j += 1
         k += 1
+
 
     #copia o restante de lEsq
     while i < len(lEsq):
@@ -128,21 +176,30 @@ def merge(l, lEsq, lDir):
         k += 1
 
 
-def mergeSort(l):
-    if len(l) > 1:
-        meio = len(l) // 2
-        lEsq = l[:meio]      #cópia da primeira metade
-        lDir = l[meio:]      #cópia da segunda metade
+def merge_sort_hibrido(l):
 
-        mergeSort(lEsq)
-        mergeSort(lDir)
+    if len(l) <= 30:
+        insertion_sort(l, 0, len(l))
+        return
+    
+    meio = len(l) // 2
+    lEsq = l[:meio] #cópia da primeira metade
+    lDir = l[meio:] #cópia da segunda metade
 
-        merge(l, lEsq, lDir)
+    merge_sort_hibrido(lEsq)
+    merge_sort_hibrido(lDir)
+    merge(l, lEsq, lDir)
 
+#-----------------------------------------------------------------------------------
 
 #EXECUÇÃO
-mergeSort(ids_corridas)
-print(ids_corridas)
+t1 = time()
+merge_sort_hibrido(itens)
+t2 = time()
+
+ids_corridas = [item[1] for item in itens]
+
+print(ids_corridas, t2 - t1)
 
 #Estrutura dos dicionários:
 # usuarios = {’468.791.579-55’: (’Lucas Soares Lopes’, 1, False),
