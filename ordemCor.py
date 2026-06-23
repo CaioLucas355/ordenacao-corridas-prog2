@@ -14,7 +14,6 @@ with open(arq, 'rb') as arquivo:
     corridas = pickle.load(arquivo)
 
 
-
 """
 (Ah, queria deixar algo de zero relação com o código: to pensando fortemente
 em substituir parte dos meus comentários com HASHTAG por essa formatação aqui, ta.
@@ -30,12 +29,15 @@ for elem in corridas:
     
 """
 
+#criação da lista de ids (somente as chaves do dicionário corridas):
 ids_corridas = [elem for elem in corridas]
 
-categoria_prioridade = {'Black': 1, 'Comfort': 2, 'Comum': 3, 'Moto': 4}
+
+#mapeamento de prioridade das categorias:
+categoria_prioridade = {'Black': 1,'Comfort': 2,'Comum': 3,'Moto': 4}
 
 
-#-----------------------------------------------------------------------------------
+#-----------------------------------------------------------------
 
 
 def chave_ordenacao(identidadeC):
@@ -47,114 +49,120 @@ def chave_ordenacao(identidadeC):
     cpf_motorista = veiculos[placa][1]
     _, estrelas, _ = usuarios[cpf_motorista]
     nome_cliente, _, _ = usuarios[cpf_cliente]
-
-    """
-
-
-    Função antiga dessa joça:
-
-
-    def comparar(id1, id2):
     
-    #Retorna True se id1 deve vir antes de id2 na ordenação.
-    #Critérios (em ordem de prioridade):
-      #1. Categoria (Black > Comfort > Comum > Moto)
-      #2. Data (mais recente primeiro)
-      #3. Estrelas do motorista (maior primeiro)
-      #4. Nome do cliente (ordem alfabética)
-      #5. Valor da corrida (maior primeiro)
-   
-
-    #desempacotamento do dicionario corridas
-    placa1, cpf_cliente1, data1, horario1, duracao1, valor1 = corridas[id1]
-    placa2, cpf_cliente2, data2, horario2, duracao2, valor2 = corridas[id2]
-
-
-    #desempacotamento de data
-    dia1, mes1, ano1 = data1
-    dia2, mes2, ano2 = data2
-
-    #1.Categoria
-    cat1 = veiculos[placa1][0]
-    cat2 = veiculos[placa2][0]
-    prio1 = categoria_prioridade[cat1]
-    prio2 = categoria_prioridade[cat2]
-
-    if prio1 != prio2:
-        return prio1 < prio2
-
-
-    #2.Data (mais recente primeiro)
-
-    #comparar ano, mês, dia de forma decrescente
-    if ano1 != ano2:
-        return ano1 > ano2
-    if mes1 != mes2:
-        return mes1 > mes2
-    if dia1 != dia2:
-        return dia1 > dia2
-
-    #3.Estrelas do motorista (maior primeiro)
-    cpf_motorista1 = veiculos[placa1][1]
-    cpf_motorista2 = veiculos[placa2][1]
-
-    #desempacota os dados do motorista (nome, estrelas, status)
-    _, estrelas1, _ = usuarios[cpf_motorista1]
-    _, estrelas2, _ = usuarios[cpf_motorista2]
-
-    if estrelas1 != estrelas2:
-        return estrelas1 > estrelas2
-
-    #4.Nome do cliente (ordem alfabética)
-    nome_cliente1, _, _ = usuarios[cpf_cliente1]
-    nome_cliente2, _, _ = usuarios[cpf_cliente2]
-
-    if nome_cliente1 != nome_cliente2:
-        return nome_cliente1 < nome_cliente2
-
-    #5.Valor da corrida (maior primeiro)
-    return valor1 > valor2
-
-
     """
 
+
+        Função antiga dessa joça:
+
+
+        def comparar(id1, id2):
+        
+        #Retorna True se id1 deve vir antes de id2 na ordenação.
+        #Critérios (em ordem de prioridade):
+        #1. Categoria (Black > Comfort > Comum > Moto)
+        #2. Data (mais recente primeiro)
+        #3. Estrelas do motorista (maior primeiro)
+        #4. Nome do cliente (ordem alfabética)
+        #5. Valor da corrida (maior primeiro)
+    
+
+        #desempacotamento do dicionario corridas
+        placa1, cpf_cliente1, data1, horario1, duracao1, valor1 = corridas[id1]
+        placa2, cpf_cliente2, data2, horario2, duracao2, valor2 = corridas[id2]
+
+
+        #desempacotamento de data
+        dia1, mes1, ano1 = data1
+        dia2, mes2, ano2 = data2
+
+        #1.Categoria
+        cat1 = veiculos[placa1][0]
+        cat2 = veiculos[placa2][0]
+        prio1 = categoria_prioridade[cat1]
+        prio2 = categoria_prioridade[cat2]
+
+        if prio1 != prio2:
+            return prio1 < prio2
+
+
+        #2.Data (mais recente primeiro)
+
+        #comparar ano, mês, dia de forma decrescente
+        if ano1 != ano2:
+            return ano1 > ano2
+        if mes1 != mes2:
+            return mes1 > mes2
+        if dia1 != dia2:
+            return dia1 > dia2
+
+        #3.Estrelas do motorista (maior primeiro)
+        cpf_motorista1 = veiculos[placa1][1]
+        cpf_motorista2 = veiculos[placa2][1]
+
+        #desempacota os dados do motorista (nome, estrelas, status)
+        _, estrelas1, _ = usuarios[cpf_motorista1]
+        _, estrelas2, _ = usuarios[cpf_motorista2]
+
+        if estrelas1 != estrelas2:
+            return estrelas1 > estrelas2
+
+        #4.Nome do cliente (ordem alfabética)
+        nome_cliente1, _, _ = usuarios[cpf_cliente1]
+        nome_cliente2, _, _ = usuarios[cpf_cliente2]
+
+        if nome_cliente1 != nome_cliente2:
+            return nome_cliente1 < nome_cliente2
+
+        #5.Valor da corrida (maior primeiro)
+        return valor1 > valor2
+
+
+        """
+    
     #Critérios (em ordem de prioridade):
-          #1. Categoria (Black > Comfort > Comum > Moto)
-          #2. Data (mais recente primeiro)
-          #3. Estrelas do motorista (maior primeiro)
-          #4. Nome do cliente (ordem alfabética)
-          #5. Valor da corrida (maior primeiro)
+            #1. Categoria (Black > Comfort > Comum > Moto)
+            #2. Data (mais recente primeiro)
+            #3. Estrelas do motorista (maior primeiro)
+            #4. Nome do cliente (ordem alfabética)
+            #5. Valor da corrida (maior primeiro)
 
     return (prio, -ano, -mes, -dia, -estrelas, nome_cliente, -valor)
 
 
-itens = [(chave_ordenacao(identidadeC), identidadeC) for identidadeC in ids_corridas]
+#PRÉ-CÁLCULO DAS CHAVES DENTRO DO PRÓPRIO DICIONÁRIO "corridas".
+for identidadeC in ids_corridas:
+    corridas[identidadeC] = chave_ordenacao(identidadeC)
+
+"""
+"Viver é muito perigoso..."
+"""
 
 
-
-#-----------------------------------------------------------------------------------
-
+#-----------------------------------------------------------------
 
 def insertion_sort(l, inicio, fim):
+
     for i in range(inicio + 1, fim):
         chave = l[i]
         j = i - 1
-        while j >= inicio and chave[0] < l[j][0]:
+        #AGORA AS CHAVES ESTÃO NO DICIONÁRIO corridas
+        while j >= inicio and corridas[chave] < corridas[l[j]]:
             l[j + 1] = l[j]
             j -= 1
         l[j + 1] = chave
 
-
-#-----------------------------------------------------------------------------------
+#-----------------------------------------------------------------
 
 def merge(l, lEsq, lDir):
-    
+
     i = 0  #ponteiro para lEsq
     j = 0  #ponteiro para lDir
     k = 0  #ponteiro para l (resultado)
 
     while i < len(lEsq) and j < len(lDir):
-        if lEsq[i][0] < lDir[j][0]:   #compara as chaves
+        #AGORA AS CHAVES ESTÃO NO DICIONÁRIO corridas
+        if corridas[lEsq[i]] < corridas[lDir[j]]: #compara as chaves
             l[k] = lEsq[i]
             i += 1
         else:
@@ -168,6 +176,7 @@ def merge(l, lEsq, lDir):
         l[k] = lEsq[i]
         i += 1
         k += 1
+
 
     #copia o restante de lDir 
     while j < len(lDir):
@@ -185,7 +194,7 @@ def merge_sortCA(l):
     meio = len(l) // 2
     lEsq = l[:meio] #cópia da primeira metade
     lDir = l[meio:] #cópia da segunda metade
-
+    
     merge_sortCA(lEsq)
     merge_sortCA(lDir)
     merge(l, lEsq, lDir)
@@ -194,10 +203,8 @@ def merge_sortCA(l):
 
 #EXECUÇÃO
 t1 = time()
-merge_sortCA(itens)
+merge_sortCA(ids_corridas)
 t2 = time()
-
-ids_corridas = [item[1] for item in itens]
 
 print(ids_corridas, t2 - t1)
 
