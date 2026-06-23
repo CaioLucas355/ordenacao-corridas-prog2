@@ -36,7 +36,7 @@ categoria_prioridade = {'Black': 1, 'Comfort': 2, 'Comum': 3, 'Moto': 4}
 
 
 #-----------------------------------------------------------------------------------
-
+#Função de Ordenação dos valores
 
 def chave_ordenacao(identidadeC):
 
@@ -48,22 +48,27 @@ def chave_ordenacao(identidadeC):
     _, estrelas, _ = usuarios[cpf_motorista]
     nome_cliente, _, _ = usuarios[cpf_cliente]
 
+    #Critérios (em ordem de prioridade):
+          #1. Categoria (Black > Comfort > Comum > Moto)
+          #2. Data (mais recente primeiro)
+          #3. Estrelas do motorista (maior primeiro)
+          #4. Nome do cliente (ordem alfabética)
+          #5. Valor da corrida (maior primeiro)
+
+    return (prio, -ano, -mes, -dia, -estrelas, nome_cliente, -valor)
+
     """
-
-
     Função antiga dessa joça:
-
 
     def comparar(id1, id2):
     
     #Retorna True se id1 deve vir antes de id2 na ordenação.
     #Critérios (em ordem de prioridade):
-      #1. Categoria (Black > Comfort > Comum > Moto)
-      #2. Data (mais recente primeiro)
-      #3. Estrelas do motorista (maior primeiro)
-      #4. Nome do cliente (ordem alfabética)
-      #5. Valor da corrida (maior primeiro)
-   
+          #1. Categoria (Black > Comfort > Comum > Moto)
+          #2. Data (mais recente primeiro)
+          #3. Estrelas do motorista (maior primeiro)
+          #4. Nome do cliente (ordem alfabética)
+          #5. Valor da corrida (maior primeiro)
 
     #desempacotamento do dicionario corridas
     placa1, cpf_cliente1, data1, horario1, duracao1, valor1 = corridas[id1]
@@ -83,9 +88,7 @@ def chave_ordenacao(identidadeC):
     if prio1 != prio2:
         return prio1 < prio2
 
-
     #2.Data (mais recente primeiro)
-
     #comparar ano, mês, dia de forma decrescente
     if ano1 != ano2:
         return ano1 > ano2
@@ -118,14 +121,6 @@ def chave_ordenacao(identidadeC):
 
     """
 
-    #Critérios (em ordem de prioridade):
-          #1. Categoria (Black > Comfort > Comum > Moto)
-          #2. Data (mais recente primeiro)
-          #3. Estrelas do motorista (maior primeiro)
-          #4. Nome do cliente (ordem alfabética)
-          #5. Valor da corrida (maior primeiro)
-
-    return (prio, -ano, -mes, -dia, -estrelas, nome_cliente, -valor)
 
 
 itens = [(chave_ordenacao(identidadeC), identidadeC) for identidadeC in ids_corridas]
@@ -201,6 +196,7 @@ ids_corridas = [item[1] for item in itens]
 
 print(ids_corridas, t2 - t1)
 
+'''
 #Estrutura dos dicionários:
 # usuarios = {’468.791.579-55’: (’Lucas Soares Lopes’, 1, False),
 #               cpf : (nome, estrelas, ehMotorista)
@@ -208,9 +204,8 @@ print(ids_corridas, t2 - t1)
 #               placa : (categoria , cpf_motorista)
 #corridas =  { 6: (’IXU-6J15’, ’468.791.579-55’, (2, 5, 2026), (0, 57), 11, 13),
 #               if : (placa, cpf_passageiro, data(dia,mes,aano), horario(hora, minuto), duracao, valor)
-
 #usemos essas terminologia pra facilitar o nosso trabalho para compreendermos facilmente o códgio
-
+'''
 #Saída de Dados
 
 
