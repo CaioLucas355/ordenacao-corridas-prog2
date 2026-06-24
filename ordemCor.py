@@ -13,7 +13,7 @@ with open(arq, 'rb') as arquivo:
     veiculos = pickle.load(arquivo)
     corridas = pickle.load(arquivo)
 
-
+corridas_orig = dict(corridas)
 """
 (Ah, queria deixar algo de zero relação com o código: to pensando fortemente
 em substituir parte dos meus comentários com HASHTAG por essa formatação aqui, ta.
@@ -37,8 +37,8 @@ ids_corridas = [elem for elem in corridas]
 categoria_prioridade = {'Black': 1,'Comfort': 2,'Comum': 3,'Moto': 4}
 
 
-#-----------------------------------------------------------------------------------
-#Função de Ordenação dos valores
+#-----------------------------------------------------------------
+
 
 def chave_ordenacao(identidadeC):
 
@@ -49,28 +49,23 @@ def chave_ordenacao(identidadeC):
     cpf_motorista = veiculos[placa][1]
     _, estrelas, _ = usuarios[cpf_motorista]
     nome_cliente, _, _ = usuarios[cpf_cliente]
-
-    #Critérios (em ordem de prioridade):
-          #1. Categoria (Black > Comfort > Comum > Moto)
-          #2. Data (mais recente primeiro)
-          #3. Estrelas do motorista (maior primeiro)
-          #4. Nome do cliente (ordem alfabética)
-          #5. Valor da corrida (maior primeiro)
-
-    return (prio, -ano, -mes, -dia, -estrelas, nome_cliente, -valor)
-
-    """
-    Função antiga dessa joça:
-
-    def comparar(id1, id2):
     
-    #Retorna True se id1 deve vir antes de id2 na ordenação.
-    #Critérios (em ordem de prioridade):
-          #1. Categoria (Black > Comfort > Comum > Moto)
-          #2. Data (mais recente primeiro)
-          #3. Estrelas do motorista (maior primeiro)
-          #4. Nome do cliente (ordem alfabética)
-          #5. Valor da corrida (maior primeiro)
+    """
+
+
+        Função antiga dessa joça:
+
+
+        def comparar(id1, id2):
+        
+        #Retorna True se id1 deve vir antes de id2 na ordenação.
+        #Critérios (em ordem de prioridade):
+        #1. Categoria (Black > Comfort > Comum > Moto)
+        #2. Data (mais recente primeiro)
+        #3. Estrelas do motorista (maior primeiro)
+        #4. Nome do cliente (ordem alfabética)
+        #5. Valor da corrida (maior primeiro)
+    
 
         #desempacotamento do dicionario corridas
         placa1, cpf_cliente1, data1, horario1, duracao1, valor1 = corridas[id1]
@@ -90,14 +85,16 @@ def chave_ordenacao(identidadeC):
         if prio1 != prio2:
             return prio1 < prio2
 
-    #2.Data (mais recente primeiro)
-    #comparar ano, mês, dia de forma decrescente
-    if ano1 != ano2:
-        return ano1 > ano2
-    if mes1 != mes2:
-        return mes1 > mes2
-    if dia1 != dia2:
-        return dia1 > dia2
+
+        #2.Data (mais recente primeiro)
+
+        #comparar ano, mês, dia de forma decrescente
+        if ano1 != ano2:
+            return ano1 > ano2
+        if mes1 != mes2:
+            return mes1 > mes2
+        if dia1 != dia2:
+            return dia1 > dia2
 
         #3.Estrelas do motorista (maior primeiro)
         cpf_motorista1 = veiculos[placa1][1]
@@ -121,8 +118,16 @@ def chave_ordenacao(identidadeC):
         return valor1 > valor2
 
 
-    """
+        """
+    
+    #Critérios (em ordem de prioridade):
+            #1. Categoria (Black > Comfort > Comum > Moto)
+            #2. Data (mais recente primeiro)
+            #3. Estrelas do motorista (maior primeiro)
+            #4. Nome do cliente (ordem alfabética)
+            #5. Valor da corrida (maior primeiro)
 
+    return (prio, -ano, -mes, -dia, -estrelas, nome_cliente, -valor)
 
 
 #PRÉ-CÁLCULO DAS CHAVES DENTRO DO PRÓPRIO DICIONÁRIO "corridas".
@@ -198,40 +203,59 @@ def merge_sortCA(l):
 
 #EXECUÇÃO
 t1 = time()
-#print(itens)
-merge_sortCA(itens)
-t2 = time()
-
-print(ids_corridas, t2 - t1)
+merge_sortCA(ids_corridas)
+#print(ids_corridas, t2 - t1)
+#t2 = time()
 
 '''
-#Estrutura dos dicionários:
-# usuarios = {’468.791.579-55’: (’Lucas Soares Lopes’, 1, False),
-#               cpf : (nome, estrelas, ehMotorista)
-#veiculos = {’BJG-7G74’: (’Black’, ’821.833.773-30’),
-#               placa : (categoria , cpf_motorista)
-#corridas =  { 6: (’IXU-6J15’, ’468.791.579-55’, (2, 5, 2026), (0, 57), 11, 13),
-#               if : (placa, cpf_passageiro, data(dia,mes,aano), horario(hora, minuto), duracao, valor)
-#usemos essas terminologia pra facilitar o nosso trabalho para compreendermos facilmente o códgio
+print(corridas)
+print(usuarios)
+print(veiculos)'''
+
+'''
+Estrutura dos dicionários:
+ usuarios = {’468.791.579-55’: (’Lucas Soares Lopes’, 1, False),
+               cpf : (nome, estrelas, ehMotorista)
+veiculos = {’BJG-7G74’: (’Black’, ’821.833.773-30’),
+               placa : (categoria , cpf_motorista)
+corridas =  { 6: (’IXU-6J15’, ’468.791.579-55’, (2, 5, 2026), (0, 57), 11, 13),
+               if : (placa, cpf_passageiro, data(dia,mes,aano), horario(hora, minuto), duracao, valor)
+
+usemos essas terminologia pra facilitar o nosso trabalho para compreendermos facilmente o códgio
 '''
 #Saída de Dados
-
-
-
-#Estrutura de como deve ser a saída
+nome_saida = "saida" + arq[7::]
+with open(nome_saida, 'w',encoding='utf-8') as exitFile:
+    categoria_atual = None
+    data_atual = None
+    
+    for ids in ids_corridas:
+        placa, cpf_passageiro, data, horario, duracao, valor = corridas_orig[ids]
+        dia , mes, ano = data
+        hora, minuto = horario
+        hora_final = (hora * 60 + minuto + duracao) // 60
+        minuto_final = (hora * 60 + minuto + duracao) % 60
+        cat, cpf_m = veiculos[placa]
+        nome_m , stars, _ = usuarios[cpf_m]
+        nome_c, _, _ = usuarios[ cpf_passageiro]
         
-'''
-CATEGORIA: Black
-\t02/05/2026
-\t\tMotorista: Antonio Barbosa Rodrigues ****
-\t\tCliente: Lucas Soares Lopes
-\t\tPeriodo: 12:10 - 12:36
-\t\tValor: R$28.00
-
-\t\tMotorista: Fernanda Santos Santana ****
-\t\tCliente: Lucas Soares Lopes
-\t\tPeriodo: 00:57 - 01:08
-\t\tValor: R$13.00   
-
-
-'''
+        if cat!= categoria_atual:
+            if categoria_atual is not None:
+                print(file=exitFile)
+            print(f'CATEGORIA: {cat}\n', file=exitFile)
+            categoria_atual = cat
+            data_atual = None
+            
+        if data!= data_atual:
+            print(f' {dia}/{mes}/{ano}\n', file=exitFile)
+            data_atual = data
+            
+        print(f'  Motorista: {nome_m} {stars*"*"}', file=exitFile)
+        print(f'  Cliente: {nome_c}', file=exitFile)
+        print(f'  Periodo: {hora}:{minuto} - {hora_final}:{minuto_final}', file=exitFile)
+        print(f'  Valor: R${valor:.2f}\n', file=exitFile)
+        
+    
+t2 = time()
+print(f'Arquivo gerado: {nome_saida}')
+print("tempo total: ",t2-t1)
