@@ -161,6 +161,7 @@ print(ids_corridas, t2-t1)
 
 
 
+
 #Estrutura de como deve ser a saída
         
 '''
