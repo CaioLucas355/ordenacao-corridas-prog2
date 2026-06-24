@@ -38,7 +38,7 @@ categoria_prioridade = {'Black': 1,'Comfort': 2,'Comum': 3,'Moto': 4}
 
 
 #-----------------------------------------------------------------------------------
-
+#Função de Ordenação dos valores
 
 def chave_ordenacao(identidadeC):
 
@@ -50,22 +50,27 @@ def chave_ordenacao(identidadeC):
     _, estrelas, _ = usuarios[cpf_motorista]
     nome_cliente, _, _ = usuarios[cpf_cliente]
 
+    #Critérios (em ordem de prioridade):
+          #1. Categoria (Black > Comfort > Comum > Moto)
+          #2. Data (mais recente primeiro)
+          #3. Estrelas do motorista (maior primeiro)
+          #4. Nome do cliente (ordem alfabética)
+          #5. Valor da corrida (maior primeiro)
+
+    return (prio, -ano, -mes, -dia, -estrelas, nome_cliente, -valor)
+
     """
-
-
     Função antiga dessa joça:
-
 
     def comparar(id1, id2):
     
     #Retorna True se id1 deve vir antes de id2 na ordenação.
     #Critérios (em ordem de prioridade):
-      #1. Categoria (Black > Comfort > Comum > Moto)
-      #2. Data (mais recente primeiro)
-      #3. Estrelas do motorista (maior primeiro)
-      #4. Nome do cliente (ordem alfabética)
-      #5. Valor da corrida (maior primeiro)
-   
+          #1. Categoria (Black > Comfort > Comum > Moto)
+          #2. Data (mais recente primeiro)
+          #3. Estrelas do motorista (maior primeiro)
+          #4. Nome do cliente (ordem alfabética)
+          #5. Valor da corrida (maior primeiro)
 
         #desempacotamento do dicionario corridas
         placa1, cpf_cliente1, data1, horario1, duracao1, valor1 = corridas[id1]
@@ -85,9 +90,7 @@ def chave_ordenacao(identidadeC):
         if prio1 != prio2:
             return prio1 < prio2
 
-
     #2.Data (mais recente primeiro)
-
     #comparar ano, mês, dia de forma decrescente
     if ano1 != ano2:
         return ano1 > ano2
@@ -120,14 +123,6 @@ def chave_ordenacao(identidadeC):
 
     """
 
-    #Critérios (em ordem de prioridade):
-          #1. Categoria (Black > Comfort > Comum > Moto)
-          #2. Data (mais recente primeiro)
-          #3. Estrelas do motorista (maior primeiro)
-          #4. Nome do cliente (ordem alfabética)
-          #5. Valor da corrida (maior primeiro)
-
-    return (prio, -ano, -mes, -dia, -estrelas, nome_cliente, -valor)
 
 
 #PRÉ-CÁLCULO DAS CHAVES DENTRO DO PRÓPRIO DICIONÁRIO "corridas".
@@ -203,6 +198,7 @@ def merge_sortCA(l):
 
 #EXECUÇÃO
 t1 = time()
+#print(itens)
 merge_sortCA(itens)
 t2 = time()
 
