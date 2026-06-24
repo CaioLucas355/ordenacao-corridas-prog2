@@ -37,7 +37,7 @@ ids_corridas = [elem for elem in corridas]
 categoria_prioridade = {'Black': 1,'Comfort': 2,'Comum': 3,'Moto': 4}
 
 
-#-----------------------------------------------------------------
+#-----------------------------------------------------------------------------------
 
 
 def chave_ordenacao(identidadeC):
@@ -49,23 +49,23 @@ def chave_ordenacao(identidadeC):
     cpf_motorista = veiculos[placa][1]
     _, estrelas, _ = usuarios[cpf_motorista]
     nome_cliente, _, _ = usuarios[cpf_cliente]
-    
+
     """
 
 
-        Função antiga dessa joça:
+    Função antiga dessa joça:
 
 
-        def comparar(id1, id2):
-        
-        #Retorna True se id1 deve vir antes de id2 na ordenação.
-        #Critérios (em ordem de prioridade):
-        #1. Categoria (Black > Comfort > Comum > Moto)
-        #2. Data (mais recente primeiro)
-        #3. Estrelas do motorista (maior primeiro)
-        #4. Nome do cliente (ordem alfabética)
-        #5. Valor da corrida (maior primeiro)
+    def comparar(id1, id2):
     
+    #Retorna True se id1 deve vir antes de id2 na ordenação.
+    #Critérios (em ordem de prioridade):
+      #1. Categoria (Black > Comfort > Comum > Moto)
+      #2. Data (mais recente primeiro)
+      #3. Estrelas do motorista (maior primeiro)
+      #4. Nome do cliente (ordem alfabética)
+      #5. Valor da corrida (maior primeiro)
+   
 
         #desempacotamento do dicionario corridas
         placa1, cpf_cliente1, data1, horario1, duracao1, valor1 = corridas[id1]
@@ -86,15 +86,15 @@ def chave_ordenacao(identidadeC):
             return prio1 < prio2
 
 
-        #2.Data (mais recente primeiro)
+    #2.Data (mais recente primeiro)
 
-        #comparar ano, mês, dia de forma decrescente
-        if ano1 != ano2:
-            return ano1 > ano2
-        if mes1 != mes2:
-            return mes1 > mes2
-        if dia1 != dia2:
-            return dia1 > dia2
+    #comparar ano, mês, dia de forma decrescente
+    if ano1 != ano2:
+        return ano1 > ano2
+    if mes1 != mes2:
+        return mes1 > mes2
+    if dia1 != dia2:
+        return dia1 > dia2
 
         #3.Estrelas do motorista (maior primeiro)
         cpf_motorista1 = veiculos[placa1][1]
@@ -118,14 +118,14 @@ def chave_ordenacao(identidadeC):
         return valor1 > valor2
 
 
-        """
-    
+    """
+
     #Critérios (em ordem de prioridade):
-            #1. Categoria (Black > Comfort > Comum > Moto)
-            #2. Data (mais recente primeiro)
-            #3. Estrelas do motorista (maior primeiro)
-            #4. Nome do cliente (ordem alfabética)
-            #5. Valor da corrida (maior primeiro)
+          #1. Categoria (Black > Comfort > Comum > Moto)
+          #2. Data (mais recente primeiro)
+          #3. Estrelas do motorista (maior primeiro)
+          #4. Nome do cliente (ordem alfabética)
+          #5. Valor da corrida (maior primeiro)
 
     return (prio, -ano, -mes, -dia, -estrelas, nome_cliente, -valor)
 
@@ -203,11 +203,12 @@ def merge_sortCA(l):
 
 #EXECUÇÃO
 t1 = time()
-merge_sortCA(ids_corridas)
+merge_sortCA(itens)
 t2 = time()
 
 print(ids_corridas, t2 - t1)
 
+'''
 #Estrutura dos dicionários:
 # usuarios = {’468.791.579-55’: (’Lucas Soares Lopes’, 1, False),
 #               cpf : (nome, estrelas, ehMotorista)
@@ -215,9 +216,8 @@ print(ids_corridas, t2 - t1)
 #               placa : (categoria , cpf_motorista)
 #corridas =  { 6: (’IXU-6J15’, ’468.791.579-55’, (2, 5, 2026), (0, 57), 11, 13),
 #               if : (placa, cpf_passageiro, data(dia,mes,aano), horario(hora, minuto), duracao, valor)
-
 #usemos essas terminologia pra facilitar o nosso trabalho para compreendermos facilmente o códgio
-
+'''
 #Saída de Dados
 
 
