@@ -135,44 +135,37 @@ def merge_sortCA(l):
 #EXECUÇÃO
 t1 = time()
 merge_sortCA(ids_corridas)
-
-with open('saida.txt', 'w', encoding='utf-8') as exitFile:
+#Saída de Dados
+nome_saida = "saida" + arq[7::]
+with open(nome_saida, 'w', encoding='utf-8') as exitFile:
     categoria_atual = None
     data_atual = None
-
+    
     for ids in ids_corridas:
         placa, cpf_passageiro, data, horario, duracao, valor = corridas[ids]
         dia, mes, ano = data
         hora, minuto = horario
-        total = hora * 60 + minuto + duracao
-        hora_final = (total // 60) % 24
-        minuto_final = total % 60
+        hora_final = (hora * 60 + minuto + duracao) // 60
+        minuto_final = (hora * 60 + minuto + duracao) % 60
         cat, cpf_m = veiculos[placa]
         nome_m, stars, _ = usuarios[cpf_m]
         nome_c, _, _ = usuarios[cpf_passageiro]
-
+        
         if cat != categoria_atual:
             if categoria_atual is not None:
-                print(file=exitFile)              # linha em branco entre categorias
-            print(f'CATEGORIA: {cat}', file=exitFile)
-            print(file=exitFile)                  # linha em branco após CATEGORIA
+                print(file=exitFile)
+            print(f'CATEGORIA: {cat}\n', file=exitFile)
             categoria_atual = cat
             data_atual = None
-
+            
         if data != data_atual:
-            if data_atual is not None:
-                print(file=exitFile)              # linha em branco antes de nova data
-            print(f'{dia:02d}/{mes:02d}/{ano}', file=exitFile)
-            print(file=exitFile)                  # linha em branco após data
+            print(f'\n {dia:02d}/{mes:02d}/{ano}', file=exitFile)
             data_atual = data
-        else:
-            print(file=exitFile)                  # linha em branco entre corridas
-
-        print(f'  Motorista: {nome_m} {"*" * stars}', file=exitFile)
+            
+        print(f'  Motorista: {nome_m} {stars * "*"}', file=exitFile)
         print(f'  Cliente: {nome_c}', file=exitFile)
         print(f'  Periodo: {hora:02d}:{minuto:02d} - {hora_final:02d}:{minuto_final:02d}', file=exitFile)
-        print(f'  Valor: R${valor:.2f}', file=exitFile)
-    
+        print(f'  Valor: R${valor:.2f}\n', file=exitFile)
 t2 = time()
 print(f'Arquivo gerado: {nome_saida}')
 print("tempo total: ", t2 - t1)
