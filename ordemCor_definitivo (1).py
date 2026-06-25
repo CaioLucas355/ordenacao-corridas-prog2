@@ -215,27 +215,28 @@ with open(nome_saida, 'w', encoding='utf-8') as exitFile:
         placa, cpf_passageiro, data, horario, duracao, valor = corridas[ids]
         dia, mes, ano = data
         hora, minuto = horario
-        hora_final = (hora * 60 + minuto + duracao) // 60
-        minuto_final = (hora * 60 + minuto + duracao) % 60
+        total_min = hora * 60 + minuto + duracao
+        hora_final = (total_min // 60) % 24
+        minuto_final = total_min % 60
         cat, cpf_m = veiculos[placa]
         nome_m, stars, _ = usuarios[cpf_m]
         nome_c, _, _ = usuarios[cpf_passageiro]
-        
+
         if cat != categoria_atual:
             if categoria_atual is not None:
                 print(file=exitFile)
-            print(f'CATEGORIA: {cat}\n', file=exitFile)
+            print(f'CATEGORIA: {cat}', file=exitFile)
             categoria_atual = cat
             data_atual = None
-            
+
         if data != data_atual:
-            print(f' {dia}/{mes}/{ano}\n', file=exitFile)
+            print(f'{dia:02d}/{mes:02d}/{ano}', file=exitFile)
             data_atual = data
-            
-        print(f'  Motorista: {nome_m} {stars * "*"}', file=exitFile)
-        print(f'  Cliente: {nome_c}', file=exitFile)
-        print(f'  Periodo: {hora}:{minuto} - {hora_final}:{minuto_final}', file=exitFile)
-        print(f'  Valor: R${valor:.2f}\n', file=exitFile)
+
+        print(f'Motorista: {nome_m} {"*" * stars}', file=exitFile)
+        print(f'Cliente: {nome_c}', file=exitFile)
+        print(f'Periodo: {hora:02d}:{minuto:02d} - {hora_final:02d}:{minuto_final:02d}', file=exitFile)
+        print(f'Valor: R${valor:.2f}\n', file=exitFile)
         
     
 t2 = time()
