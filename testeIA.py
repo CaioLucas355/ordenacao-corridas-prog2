@@ -24,8 +24,7 @@ with open(arq, 'rb') as arquivo:
 ids_corridas = [elem for elem in corridas]
 
 
-#mapeamento de prioridade das categorias:
-categoria_prioridade = {'Black': 1, 'Comfort': 2, 'Comum': 3, 'Moto': 4}
+
 
 
 #-----------------------------------------------------------------
@@ -43,8 +42,17 @@ def chave(id_corrida):
     _, estrelas, _ = usuarios[cpf_mot]
     nome_c, _, _   = usuarios[cpf_cliente]
 
+    if cat == 'Black':
+        prio = 1
+    elif cat == 'Comfort':
+        prio = 2
+    elif cat == 'Comum':
+        prio = 3
+    else:
+        prio = 4
+
     return (
-        categoria_prioridade[cat],  # menor = mais prioritário
+        prio,                       # menor = mais prioritário
         -ano, -mes, -dia,           # negativo → mais recente primeiro
         -estrelas,                  # negativo → maior primeiro
         nome_c,                     # alfabético
